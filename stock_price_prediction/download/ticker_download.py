@@ -38,7 +38,3 @@ class GetData:
         
         df.columns = [' '.join(col).strip() for col in df.columns.values]
         df.to_parquet(target_path, compression="GZIP")
-
-getter = GetData()
-
-print(getter._download_data("test.parquet", "~/OneDrive - Santander Office 365/Projects/stock-price-prediction/data/", "AAPL GOOGL", period="ytd", group_by="ticker").head().to_string())
