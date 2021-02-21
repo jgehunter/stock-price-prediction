@@ -12,7 +12,7 @@ class GetData:
     ):
         # create directory
         target_dir = Path(target_dir).expanduser()
-        # target_dir.mkdir(exist_ok=True, parents=True)
+        target_dir.mkdir(exist_ok=True, parents=True)
         # name of saved file
         _target_file_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_" + file_name
         target_path = target_dir.joinpath(_target_file_name)
@@ -35,8 +35,10 @@ class GetData:
             proxy=proxy
         )
 
-        return df
+        
+        df.columns = [' '.join(col).strip() for col in df.columns.values]
+        df.to_parquet(target_path, compression="GZIP")
 
 getter = GetData()
 
-print(getter._download_data("test", "test", "AAPL", period="ytd").head().to_string())
+print(getter._download_data("test.parquet", "~/OneDrive - Santander Office 365/Projects/stock-price-prediction/data/", "AAPL GOOGL", period="ytd", group_by="ticker").head().to_string())
