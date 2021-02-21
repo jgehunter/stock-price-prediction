@@ -1,10 +1,42 @@
 import yfinance as yf
 import pandas as pd
+from pathlib import Path
+import datetime
+from loguru import logger
 
-data = yf.download(tickers="SPY",
-                   period="1d",
-                   auto_adjust=True,
-                   )
 
-print(data.to_string())
+class GetData:
 
+    def _download_data(
+        self, file_name, target_dir: [Path, str], tickers, start=None, end=None, period=None, interval="1d", group_by="column", auto_adjust=True, prepost=False, threads=True, proxy=None,
+    ):
+        # create directory
+        target_dir = Path(target_dir).expanduser()
+        # target_dir.mkdir(exist_ok=True, parents=True)
+        # name of saved file
+        _target_file_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_" + file_name
+        target_path = target_dir.joinpath(_target_file_name)
+
+        logger.warning(
+            f"The data is downloaded from Yahoo Finance. Take note that the quality of the data may not be perfect."
+        )
+        logger.info(f"{file_name} downloading...")
+
+        df = yf.download(
+            tickers=tickers,
+            start=start,
+            end=end,
+            period=period,
+            interval=interval,
+            group_by=group_by,
+            auto_adjust=auto_adjust,
+            prepost=prepost,
+            threads=threads,
+            proxy=proxy
+        )
+
+        return df
+
+getter = GetData()
+
+print(getter._download_data("test", "test", "AAPL", period="ytd").head().to_string())
