@@ -14,7 +14,8 @@ class GetData:
         target_dir = Path(target_dir).expanduser()
         target_dir.mkdir(exist_ok=True, parents=True)
         # name of saved file
-        _target_file_name = file_name
+        _target_file_name = 
+        file_name
         target_path = target_dir.joinpath(_target_file_name)
 
         logger.warning(
