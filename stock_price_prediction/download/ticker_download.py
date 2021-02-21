@@ -14,7 +14,8 @@ class GetData:
         target_dir = Path(target_dir).expanduser()
         target_dir.mkdir(exist_ok=True, parents=True)
         # name of saved file
-        _target_file_name = datetime.datetime.now().strftime("%Y%m%d%H%M%S") + "_" + file_name
+        _target_file_name = 
+        file_name
         target_path = target_dir.joinpath(_target_file_name)
 
         logger.warning(
@@ -35,6 +36,6 @@ class GetData:
             proxy=proxy
         )
 
-        
-        df.columns = [' '.join(col).strip() for col in df.columns.values]
+        if " " in tickers:
+            df.columns = [' '.join(col).strip() for col in df.columns.values]
         df.to_parquet(target_path, compression="GZIP")
